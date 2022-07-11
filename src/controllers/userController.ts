@@ -3,23 +3,21 @@ import { database } from "../database/db";
 
 const data = database;
 
-interface User {
-    name: string;
-    age: number;
-    email: string;
-}
-
-interface Users {
-    users: User[];
-}
-
 export class UsersController {
 	criarUsuario(req: Request, res: Response): Response {
-		data.push(req.body);
-		return res.status(200).json(data);
+		const name = req.body.name
+
+		if (name.length > 0) {
+			data.push(req.body);
+			return res.status(200).json(data);
+		}
+
+		return res
+			.status(403)
+			.json({ message: "Não é possível cadastrar usuário em branco." });
 	}
 
-	ListarUsuario(req: Request, res: Response): Response {
+	listarUsuario(req: Request, res: Response): Response {
 		return res.status(200).json(data);
 	}
 }
